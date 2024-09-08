@@ -1,14 +1,132 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <title>Tareas Aleatoreas - Home</title>
+        <title>Basico y rapido</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+            .container {
+                background: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                max-width: 400px;
+                width: 100%;
+            }
+            h1 {
+                text-align: center;
+                color: #333;
+            }
+            label {
+                display: block;
+                margin: 10px 0 5px;
+            }
+            input[type="number"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+            button {
+                width: 100%;
+                padding: 10px;
+                background-color: #007bff;
+                border: none;
+                color: white;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            .results {
+                margin-top: 20px;
+            }
+        </style>
     </head>
     <body>
-        
-        
-        <h1>Tareas Aleatoreas</h1>
-        
-        
-        <a href="basico-rapido.html">Basico(rapido)</a>
+        <div class="container">
+            <h1>Asignador de Tareas</h1>
+            <label for="numParticipants">Número de Participantes:</label>
+            <input type="number" id="numParticipants" min="1">
+            <button id="generateTasks">Generar Tareas</button>
+            <div class="results" id="results"></div>
+        </div>
 
+    <script>
+        var variables = {
+            start : 1,
+        }
+        var randomTask = {
+            
+            // np : numero de persona
+            basicAndFast : function(numPerson){
+                
+                var arrayNumbers = [];
+                
+                while(arrayNumbers.length < numPerson){
+                    var newNumber = this.generatorNumer(variables.start, numPerson);
+                    if (arrayNumbers.length > 0) {
+                        var status = this.searchNumber(arrayNumbers, newNumber);
+                        if (status === false) {
+                            arrayNumbers.push(newNumber);
+                        }
+                    } else {
+                        arrayNumbers.push(newNumber);
+                    }
+                    
+                }
+                
+                
+                return arrayNumbers;
+            },
+            
+            generatorNumer : function(min, max) {
+                
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            },
+            
+            searchNumber : function(arrayN, value) {
+                var flag = false;
+                for (var i = 0; i < arrayN.length; i++) {
+                    if (arrayN[i] === value) {
+                        flag = true;
+                        return flag;
+                    }
+                }
+                
+                return flag;
+            }
+        }
+        
+
+        document.getElementById("generateTasks").addEventListener("click", function(){
+            var html = '<h2>Asignaciones de Tareas</h2>';
+            var number = parseInt(document.getElementById('numParticipants').value);
+            var data = randomTask.basicAndFast(number);
+
+            if (isNaN(number) || number <= 0) {
+                html += '<p>Por favor, ingresa un número válido de participantes.</p>';
+            } else {
+                for (var i = 0; i < number; i++) {
+                    html += '<p>Participante ' + (i + 1) + ': Tarea ' + data[i] + '</p>';
+                }
+            }
+            
+            console.log('html', html)
+            document.getElementById('results').innerHTML = html;
+            console.log(data);
+        });
+    </script>
     </body>
 </html>
